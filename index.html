@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.cdnfonts.com/css/rangile" rel="stylesheet">
+    <title>Happy Birthday!</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #fdebf7; /* Soft pink background */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Retro Initial Message */
+        .message {
+            position: absolute;
+            top: 60%; /* Adjusted to leave space for the pigeon */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #ff6f91; /* Pastel pink text */
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            font-family: monospace; /* Retro font */
+            text-shadow: 0 0 10px #ff6f91, 0 0 20px #ff6f91; /* Glow effect */
+        }
+
+        /* Pigeon Styling */
+        .pigeon {
+            position: absolute;
+            width: 120px;
+            cursor: pointer;
+            animation: fly 8s ease-in-out infinite;
+            z-index: 5;
+            top: 30%; /* Positioned above the text */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes fly {
+            0% { transform: translateX(-20vw) translateY(0); }
+            25% { transform: translateX(0) translateY(-10vh); }
+            50% { transform: translateX(20vw) translateY(0); }
+            75% { transform: translateX(0) translateY(10vh); }
+            100% { transform: translateX(-20vw) translateY(0); }
+        }
+
+        /* Vintage Letter */
+        .letter-container {
+            display: none; /* Initially hidden */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(90deg); /* Start rolled up */
+            width: 600px; /* Increased size */
+            height: 700px; /* Increased size */
+            background: url('/bday/letter.png') no-repeat center/cover; /* Replace with vintage paper texture */
+            border-radius: 15px; /* Slightly rounded corners */
+            z-index: 20;
+            opacity: 0; /* Fully transparent initially */
+            transition: all 5s ease-in-out; /* Smooth fade-in and unroll */
+        }
+
+        .letter-container.visible {
+            display: block; /* Make it visible */
+            opacity: 1; /* Fully opaque */
+            transform: translate(-50%, -50%) rotateX(0deg); /* Unroll the letter */
+        }
+
+        /* Lace */
+        .letter-lace {
+            position: absolute;
+            top: -95px; /* Adjusted for larger letter */
+            left: 50%;
+            transform: translateX(-90%);
+            width: 300px; /* Adjusted for larger letter */
+            height: 450px; /* Adjusted for larger letter */
+            background: url('/bday/lace.png') no-repeat center/cover;
+            border-radius: 15px; /* Slightly rounded lace */
+            cursor: pointer;
+            transition: transform 0.9s ease;
+        }
+
+        .letter-lace:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Letter Content */
+        .letter-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Georgia', serif;
+            font-size: 25px; /* Slightly larger font */
+            color: #4d2e2e;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .letter-content.visible {
+            opacity: 1;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ec446b;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Generate Confetti */
+        .confetti:nth-child(1) { left: 10%; animation-duration: 5s; background-color: #f06b57; }
+        .confetti:nth-child(2) { left: 20%; animation-duration: 7s; background-color: #f7416b; }
+        .confetti:nth-child(3) { left: 30%; animation-duration: 6s; background-color: #f06752; }
+        .confetti:nth-child(4) { left: 40%; animation-duration: 8s; background-color: #d14364; }
+        .confetti:nth-child(5) { left: 50%; animation-duration: 5s; background-color: #fd7d6a; }
+        .confetti:nth-child(6) { left: 60%; animation-duration: 7s; background-color: #f73b67; }
+        .confetti:nth-child(7) { left: 70%; animation-duration: 6s; background-color: #fc745f; }
+        .confetti:nth-child(8) { left: 80%; animation-duration: 8s; background-color: #f53b66; }
+        .confetti:nth-child(9) { left: 90%; animation-duration: 5s; background-color: #ff9a8b; }
+    </style>
+</head>
+<body>
+
+    <!-- Pigeon -->
+    <img src="../bday/pigeon.png" alt="Pigeon" class="pigeon" id="pigeon">
+
+    <!-- Initial Message -->
+    <div class="message" id="initialMessage">
+        See I told you I will send a pigeon to you... Here you go... Click on it to see what it says.
+    </div>
+
+    <!-- Audio -->
+    <audio id="pigeonSound" src="bday/pigeon_take_off-105317.mp3"></audio>
+
+    <!-- Vintage Letter -->
+    <div class="letter-container" id="letterContainer">
+        <!-- Lace -->
+        <div class="letter-lace" id="letterLace"></div>
+        <!-- Letter Content -->
+        <div class="letter-content" id="letterContent">
+            <p style="color: #524040; font-family: 'Rangile', sans-serif; font-size: 50px; margin-top: -27px;">My Love,</p>
+            <p>Tada....Today is a very special day hehehehe I just love surprising you with new things. </p>
+            <p style="margin-top: -10px;">I don't want you to age this early I love your 17th 18th 19th and will continue loving.</p>
+            <p style="margin-bottom: -2px;">You don't realise how precious it feel to have you as a lover, my soulmate, my everything.</p>
+            <p style="margin-bottom: -12px;">You are the best girlfriend</p>
+            <p>With love, <br> Suraj</p>
+        </div>
+    </div>
+
+    <!-- Confetti -->
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+
+    <script>
+        const pigeon = document.getElementById('pigeon');
+        const initialMessage = document.getElementById('initialMessage');
+        const pigeonSound = document.getElementById('pigeonSound');
+        const letterContainer = document.getElementById('letterContainer');
+        const letterLace = document.getElementById('letterLace');
+        const letterContent = document.getElementById('letterContent');
+
+        // Event listener for pigeon click
+        pigeon.addEventListener('click', () => {
+            // Play sound with error handling
+            pigeonSound.play().catch(error => {
+                console.log("Audio failed to play:", error);
+            });
+            initialMessage.style.display = 'none'; // Hide initial message
+
+            // Stop pigeon animations and show the letter with fade and roll effect
+            setTimeout(() => {
+                pigeon.style.animation = 'none';
+                pigeon.style.display = 'none'; // Hide the pigeon after clicking
+
+                // Show the letter with a delay to allow fade-in
+                setTimeout(() => {
+                    letterContainer.classList.add('visible'); // Add the 'visible' class to trigger the fade-in
+                }, 500); // Delay of 500ms before the letter appears
+            }, 1000); // Delay of 1 second before hiding the pigeon
+        });
+
+        // Event listener for lace click
+        letterLace.addEventListener('click', () => {
+            letterContent.classList.add('visible'); // Reveal the letter content
+        });
+    </script>
+
+</body>
+</html>
