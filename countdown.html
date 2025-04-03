@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trisha's Surprise Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/ananda-black" rel="stylesheet">
+                
+    <style>
+        /* Define the custom font */
+        @font-face {
+            font-family: 'NCLNeovibes';
+            src: url('NCLNeovibes-Demo.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #f7e1ff, #d4a5ff); /* Tangled-inspired purple gradient */
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 30px;
+            position: relative;
+        }
+        h1 {
+            font-family: 'Ananda', sans-serif;
+            font-size: 2.8em;
+            color: #ffd700; /* Golden yellow */
+            text-shadow: 1px 1px 3px #4b2e5a;
+            margin: 0 0 15px;
+        }
+        #timer {
+            font-family: 'NCLNeovibes', sans-serif; /* Use the custom font */
+            font-size: 3.5em;
+            color: #8a2be2; /* Rapunzel's purple */
+        }
+        .lantern {
+            position: absolute;
+            width: 190px; /* Smaller for minimalism */
+            height: 190px;
+            background: url('lantern.png') no-repeat center;
+            background-size: contain;
+            opacity: 0.9;
+            animation: float 3.5s ease-in-out infinite;
+        }
+        .lantern1 { top: -105px; left: -90px; }
+        .lantern2 { bottom: 140px; right: -100px; }
+        .lantern3 { top: 110px; right: -30px; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lantern lantern1"></div>
+        <div class="lantern lantern2"></div>
+        <div class="lantern lantern3"></div>
+        <h1>Trisha's Surprise Within</h1>
+        <div id="timer">Loading...</div>
+    </div>
+
+    <script>
+        // Set the target date: April 4th, 2025, 00:00:00
+        const birthday = new Date("April 4, 2025 00:00:00").getTime();
+
+        // Update the countdown every second
+        const countdown = setInterval(() => {
+            const now = new Date().getTime();
+            const timeLeft = birthday - now;
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Display the countdown
+            document.getElementById("timer").innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            // If the countdown is over, redirect to index.html
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                window.location.href = "index.html";
+            }
+        }, 1000);
+
+        // Immediate check in case it's already past the target time
+        if (new Date().getTime() >= birthday) {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
